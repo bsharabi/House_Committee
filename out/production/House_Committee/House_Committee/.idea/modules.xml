@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/house_committee_gui.iml" filepath="$PROJECT_DIR$/.idea/house_committee_gui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/House-Committee.iml" filepath="$PROJECT_DIR$/House-Committee.iml" />
     </modules>
   </component>
 </project>

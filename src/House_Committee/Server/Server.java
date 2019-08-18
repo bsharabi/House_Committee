@@ -14,7 +14,7 @@ public class Server {
     {
         ServerSocket s = null;
         sqlHandler sql = new sqlHandler();
-        int port = 10000;
+        int port = 12000;
         try {
             s = new ServerSocket(port);
             sqlHandler.ConnectingToSQL();

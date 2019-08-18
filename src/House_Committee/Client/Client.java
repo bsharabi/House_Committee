@@ -20,20 +20,20 @@ public class Client {
     static JPanel mainPanel; //This variable responsible to the gui
     static JPanel panel;//This variable responsible to the gui
     static MainView mainView;
-
-
+    static DataOutputStream outToServer;
+    static BufferedReader inFromServer;
+    static Socket clientSocket;// server ip and port
+    static String strFromServer;// This variable may contain the response from the server
     // ---------------------------------------------- Function ------------------------------------------------//
 
     public static void main(String argv[]) throws Exception {
 
-
-        String strFromServer; // This variable may contain the response from the server
-        Socket clientSocket = new Socket("localhost", 10000); // server ip and port
+        clientSocket = new Socket("localhost", 12000); // server ip and port
 
         // pipe for send data to the server
-        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        outToServer = new DataOutputStream(clientSocket.getOutputStream());
         // pipe for get data from the server
-        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
         try {
             System.out.println(inFromServer.readLine()); // getting from server
@@ -49,7 +49,7 @@ public class Client {
                         break;
                     // in case of successful registration (this come only from the server!!)
                     case "Registered":
-                        Massage("Please log in to your account\n", "Registered  Successfully", "Ok");
+                        Massage("Registered  Successfully, Please log in to your account\n", "Registered  Successfully", "Ok");
                         continue;
                     case "connected":
                         String resp = inFromServer.readLine();
@@ -68,6 +68,7 @@ public class Client {
                 switch (userDetails.get("Operation")) {
                     case "Exit":
                         // if the user close the form from the X or Cancel Button
+                        Massage("GoodBey!", "You are clicked to EXIT!", "Ok");
                         exit(inFromServer, outToServer);
                         break;
                     case "Register": // get more info from the user by the command line
@@ -87,13 +88,11 @@ public class Client {
                         String resp = inFromServer.readLine();
                         if (resp.startsWith("false")) {
                             Massage("Authentication failed, username or password incorrect.\n" +
-                                    "please try again", "Error", "Error");
-                            System.out.println(inFromServer.readLine());
+                                    "please try again", inFromServer.readLine(), "Error");
                         } else if (resp.startsWith("true")) //&& userDetails.get("role").equals("Tenant")
                         {
-                            String result = inFromServer.readLine();
-                            System.out.println(result);
-                            getMainMenu(outToServer, inFromServer, resp);
+                            Massage(inFromServer.readLine(), "The connection was successful", "Ok");
+//                            getMainMenu(outToServer, inFromServer, resp);
                         } else
                             userDetails = null;
                         break;
@@ -109,119 +108,167 @@ public class Client {
     private static void getMainMenu(DataOutputStream outToServer, BufferedReader inFromServer, String resp) {
         try {
             String response;
+            int option;
             userDetails.put("Operation", "Menu");
 
             outToServer.writeBytes(arrToStr(userDetails)); // send to server the menu request
             response = inFromServer.readLine().replaceAll(LineBreak, "\n");//Get from server response
-            while (!response.startsWith("Hi"))
-                response = inFromServer.readLine().replaceAll(LineBreak, "\n");
-////            System.out.println(response); // read welcome message
-
-
 
             boolean flag = true;
             while (flag) {
+                mainPanel = new JPanel();
+                mainPanel.setLayout(new GridLayout(0, 1));
+                panel = new JPanel();
+                panel.setLayout(new GridLayout(0, 1));
+                panel.add(new JLabel(response));
+                panel.add(new JLabel("Welcome to the House Committee Program!"));
+                mainPanel.add(panel);
 
                 if (resp.split(" ")[1].equals("false")) { // if the user is Tenant
-                    mainPanel = new JPanel();
-                    mainPanel.setLayout(new GridLayout(0,1));
 
-                    panel = new JPanel();
-                    panel.setLayout(new GridLayout(0,1));
-                    panel.add(new JLabel(response));
-                    panel.add(new JLabel("Welcome to the House Committee Program!"));
-                    mainPanel.add(panel);
-
-                    int option = JOptionPane.showOptionDialog(null, mainPanel, "Menu",
+                    option = JOptionPane.showOptionDialog(null, mainPanel, "Menu",
                             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
-                            null, new String[]{"Change your Password","get your payment history" ,"Logout"}, null);
-                    System.out.println(option);
+                            null, new String[]{"Change your Password", "get your payment history", "Logout"}, null);
+
                     switch (option) {
                         case 0:
-                            while (userDetails == null)
-                                userDetails = changePassword(); // get new password from the client
-                            outToServer.writeBytes("0:0 " + arrToStr(userDetails)); // send to server old and new passwords
+                            userDetails = changePassword();
+                            while (userDetails.get("Operation").equals("Faild"))
+                                userDetails = changePassword();
+                            if (userDetails.get("Operation").equals("Back")) {
+                                outToServer.writeBytes("choice:99" + "\n");
+                                flag = false;
+                                break;
+                            }
+                            outToServer.writeBytes("0:0 " + arrToStr(userDetails));
                             userDetails.remove("oldPassword");
                             userDetails.remove("newPassword");
+                            Massage(inFromServer.readLine(), "Massage", "Ok");
                             flag = false;
                             break;
                         case 1:
                             outToServer.writeBytes("1\n");
-                            System.out.println(inFromServer.readLine().replaceAll(LineBreak, "\n"));
+                            new MainView(inFromServer.readLine(), inFromServer.readLine());
                             flag = false;
                             break;
+                        case JOptionPane.CLOSED_OPTION:
                         case 2:
                             System.out.println("BYE");
                             exit(inFromServer, outToServer);
                             flag = false;
                             break;
+
                         default:
                             System.out.println("not a valid Choice");
-
-                            System.out.println(response);
                             continue;
                     }
 
                 } else // if the user is committee
                 {
-                                   String modifiedSentence = scanner.nextLine();
-
-                    switch (modifiedSentence.toLowerCase()) {
-                        case "0":
+                    option = JOptionPane.showOptionDialog(null, mainPanel, "Menu",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                            null, new String[]{"Change your Password", "get your payment history", "get all payment", "insert Payment by Apartment", "get all  summarised payment", "Logout"}, "0");
+                    switch (option) {
+                        case 0:
                             userDetails = changePassword();
+                            while (userDetails.get("Operation").equals("Faild"))
+                                userDetails = changePassword();
+                            if (userDetails.get("Operation").equals("Back")) {
+                                outToServer.writeBytes("choice:99" + "\n");
+                                flag = false;
+                                break;
+                            }
                             outToServer.writeBytes("choice:0 " + arrToStr(userDetails));
-
                             userDetails.remove("oldPassword");
                             userDetails.remove("newPassword");
                             flag = false;
                             break;
-                        case "1":
-                            System.out.println("Please enter Apartment Number Id: ");
-                            modifiedSentence = scanner.nextLine();
-                            outToServer.writeBytes("choice:1 ApartmentNumber:" + modifiedSentence + "\n");
+                        case 1:
+                            mainPanel = new JPanel();
+                            mainPanel.setLayout(new GridLayout(0, 1));
+                            panel = new JPanel();
+                            panel.setLayout(new GridLayout(0, 1));
+
+                            panel.add(new JLabel("Please enter Apartment Number Id"));
+                            JTextField Sentence = new JTextField(15);
+                            panel.add(Sentence);
+                            mainPanel.add(panel);
+                            while (true) {
+                                JOptionPane.showOptionDialog(null, mainPanel, "Choose Apartment",
+                                        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                                        null, new String[]{"Send"}, "0");
+                                if (!Sentence.getText().equals(""))
+                                    break;
+                                else
+                                    Massage("Please try again", "Error", "Error");
+                            }
+                            outToServer.writeBytes("choice:1 ApartmentNumber:" + Sentence.getText() + "\n");
                             flag = false;
                             break;
-                        case "2":
+                        case 2:
                             outToServer.writeBytes("choice:2\n");
                             flag = false;
                             break;
-                        case "3":
-                            System.out.println("Please enter Apartment Number: ");
-                            modifiedSentence = scanner.nextLine();
-                            outToServer.writeBytes("choice:3 ApartmentNumber:" + modifiedSentence);
-                            System.out.println("Please enter payment Sum: ");
-                            modifiedSentence = scanner.nextLine();
-                            outToServer.writeBytes(" paymentSum:" + modifiedSentence);
-                            System.out.println("Please enter payment Date: (yyyy-MM-dd) ");
-                            modifiedSentence = scanner.nextLine();
-                            outToServer.writeBytes(" paymentDate:" + modifiedSentence + "\n");
+                        case 3:
+                            mainPanel = new JPanel();
+                            mainPanel.setLayout(new GridLayout(0, 1));
+                            panel = new JPanel();
+                            panel.setLayout(new GridLayout(0, 1));
+
+                            panel.add(new JLabel("Please enter Apartment Number"));
+                            JTextField Apartment = new JTextField(15);
+                            panel.add(Apartment);
+
+
+                            panel.add(new JLabel("Please enter payment Sum"));
+                            JTextField payment = new JTextField(15);
+                            panel.add(payment);
+
+
+                            panel.add(new JLabel("Please enter payment Date: (yyyy-MM-dd)"));
+                            JTextField Date = new JTextField(15);
+                            panel.add(Date);
+                            mainPanel.add(panel);
+                            while (true) {
+                                JOptionPane.showOptionDialog(null, mainPanel, "Insert Payment",
+                                        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                                        null, new String[]{"Send"}, "0");
+                                if (Apartment.getText().equals("") || payment.getText().equals("") || Date.getText().equals(""))
+                                    Massage("Please try again", "Error", "Error");
+                                else
+                                    break;
+                            }
+
+                            outToServer.writeBytes("choice:3 ApartmentNumber:" + Apartment.getText());
+                            outToServer.writeBytes(" paymentSum:" + payment.getText());
+                            outToServer.writeBytes(" paymentDate:" + Date.getText() + "\n");
                             flag = false;
                             break;
-                        case "4":
+                        case 4:
                             outToServer.writeBytes("choice:4\n");
                             flag = false;
                             break;
-                        case "exit":
-                        case "logout":
+                        case JOptionPane.CLOSED_OPTION:
+                        case 5:
                             System.out.println("BYE");
                             exit(inFromServer, outToServer);
                             flag = false;
                             break;
                         default:
                             System.out.println("not a valid Choice");
-
-                            System.out.println(response);
                             continue;
                     }
                     String FromServer = inFromServer.readLine();
                     if (FromServer.startsWith("**"))
                         new MainView(FromServer, inFromServer.readLine());
-                    else
+                    else if (!userDetails.get("Operation").equals("Back"))
                         Massage(FromServer, "Massage", "Ok");
 
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -373,7 +420,7 @@ public class Client {
                 }
                 break;
             case JOptionPane.CLOSED_OPTION:
-                System.out.println("GoodBye");
+                Massage("GoodBye", "Closed", "Ok");
                 return null;
             default:
                 return null;
@@ -384,7 +431,7 @@ public class Client {
 
     //-----------------------------------------------------------------------------------------------------------------------------//
 
-    private static HashMap<String, String> changePassword() {
+    private static HashMap<String, String> changePassword() throws IOException {
 
         int optionPanel;
         HashMap<String, String> res = new HashMap<>();
@@ -412,27 +459,28 @@ public class Client {
         mainPanel.add(panel);
         optionPanel = JOptionPane.showOptionDialog(null, mainPanel, "Login Form",
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
-                null, new String[]{"OK", "Cancel"}, null);
+                null, new String[]{"OK", "Back"}, null);
 
         switch (optionPanel) // pressing OK button
         {
             case 0:
                 String password = new String(pass1Text.getPassword());
                 String password2 = new String(pass2Text.getPassword());
-                if (password.equals(password2) && password.length() > 0) {
+                if (password.equals(password2) && password.length() > 0 && !oldPassText.getText().equals("")) {
                     res.put("Operation", "PasswordChange");
                     res.put("oldPassword", Encoder.strEncoder(oldPassText.getText(), "SHA-256"));
                     res.put("newPassword", Encoder.strEncoder(password, "SHA-256"));
                     return res;
                 } else {
-                    Massage("two Password must be equals", "Error", "Error");
-                    return null;
+                    Massage("two Password must be equals or old pass worng", "Error", "Error");
+                    res.put("Operation", "Faild");
+                    return res;
                 }
             case JOptionPane.CLOSED_OPTION: // on form close
-                res.put("Operation", "Exit");
-                return res;
+                exit(inFromServer, outToServer);
             case 1: // on Cancel click
-                return loginOrRegister();
+                res.put("Operation", "Back");
+                return res;
         }
         return null;
     }
@@ -468,7 +516,7 @@ public class Client {
 
         optionPanel = JOptionPane.showOptionDialog(null, mainPanel, "Register Form",
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
-                null, new String[]{"OK", "Cancel"}, null);
+                null, new String[]{"OK", "Back"}, null);
 
         switch (optionPanel) // pressing OK button
         {
@@ -530,7 +578,7 @@ public class Client {
                 res.put("userName", userText.getText());
                 res.put("Password", Encoder.strEncoder(new String(passText.getPassword()), "SHA-256"));
                 if (userText.getText().equals("") || passText.getPassword().length <= 0) {
-                    Massage("Please Try again!", "Error", "Error");
+                    Massage("Something went wrong, Please Try again!", "Error", "Error");
                     res = null;
                 }
                 return res;
@@ -538,7 +586,6 @@ public class Client {
                 return register();
 
             case JOptionPane.CLOSED_OPTION: // on form close
-                return null;
             case 2: // on Cancel
                 res.put("Operation", "Exit");
                 return res;
@@ -573,8 +620,4 @@ public class Client {
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------//
-
-    private static void CreatePanel() {
-
-    }
 }

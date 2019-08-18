@@ -24,6 +24,12 @@ public class socketHandler extends Thread {
     private int _port;
     public Boolean[] isLoggedIn = new Boolean[]{false, false};
     private final int PAYMET_PER_ROOM = 70;
+    private String fromClient;                                  // This variable may contain the response from the client
+    private HashMap<String, String> details = new HashMap<>();  //The HashMap responsible to the details of client
+    private String[] clientArr = null;                          // This variable may contain the response from the client in array String
+    private Person person;
+    private BufferedReader inFromClient;
+    private DataOutputStream outToClient;
 
     //---------------------------------------------------- Constructor --------------------------------------------------------------//
 
@@ -33,28 +39,16 @@ public class socketHandler extends Thread {
         _port = port;
     }
 
-    //---------------------------------------------------- Function  --------------------------------------------------------------//
-    private HashMap<String, String> stringToHashMap(String[] arr, HashMap<String, String> details) {
-        for (String s : arr) {
-            String key, value;
-            String[] f = s.split(":");
-            key = f[0];
-            value = f[1];
-            details.put(key, value);
-        }
-        return details;
-    }
 //--------------------------------------------------------------------------------------------------------------------------------//
 
     public void run() {
-        String fromClient;
-        HashMap<String, String> details = new HashMap<>();
-        String[] clientArr = null;
-        Person person;
+
         try {
 
-            BufferedReader inFromClient = new BufferedReader(new InputStreamReader(incoming.getInputStream()));
-            DataOutputStream outToClient = new DataOutputStream(new DataOutputStream(incoming.getOutputStream()));
+            // pipe for get data from the client
+            inFromClient = new BufferedReader(new InputStreamReader(incoming.getInputStream()));
+            // pipe for send data to the client
+            outToClient = new DataOutputStream(new DataOutputStream(incoming.getOutputStream()));
 
             outToClient.writeBytes("connected to server " + incoming.getInetAddress() + "/" + _port + "\n");
 
@@ -64,6 +58,7 @@ public class socketHandler extends Thread {
                     outToClient.writeBytes("Login\n");
                 else
                     outToClient.writeBytes(isLoggedIn[0] + " " + isLoggedIn[1] + "\n");
+
                 fromClient = inFromClient.readLine();
 
                 if (fromClient != null) {
@@ -76,9 +71,9 @@ public class socketHandler extends Thread {
                             isLoggedIn = sqlHandler.userLogin(details.get("userName"), details.get("Password"));
                             outToClient.writeBytes(isLoggedIn[0] + " " + isLoggedIn[1] + "\n");
                             if (isLoggedIn[0])
-                                outToClient.writeBytes("connected\n");
+                                outToClient.writeBytes("connected successful!!\n");
                             else
-                                outToClient.writeBytes("Connection failed\n");
+                                outToClient.writeBytes("Connection failed!!\n");
                             break;
                         case "Register":
                             System.out.println("register");
@@ -101,37 +96,38 @@ public class socketHandler extends Thread {
                                 sqlHandler.set_monthly_payment(Integer.parseInt(details.get("monthlyPayment")) * PAYMET_PER_ROOM + "");
                             }
                             outToClient.writeBytes("Registered\n");
-//                            outToClient.writeBytes("Login\n");
                             break;
                         case "Menu":
                             person = sqlHandler.getTenantByUserName(details.get("userName"));
                             String result;
-                            outToClient.writeBytes("Hi " + person.getFirstName() + "!" + Server.SPACIALLINEBREAK +"\n");
 
-//                            outToClient.writeBytes("Hi " + person.getFirstName() + "!" + Server.SPACIALLINEBREAK + "Welcome to the House Committee Program!" + Server.SPACIALLINEBREAK);
-//                            outToClient.writeBytes("Please enter 0 if you want to Change your Password" + Server.SPACIALLINEBREAK);
+                            outToClient.writeBytes("Hi " + person.getFirstName() + "!" + Server.SPACIALLINEBREAK + "\n");
+
                             if (person instanceof Tenant) {
-//                                outToClient.writeBytes(person+"\n");
-//                                outToClient.writeBytes("Please enter 1 in order to get your payment history Or \"Logout\" for exit\n");
+
                                 fromClient = inFromClient.readLine();
                                 System.out.println(fromClient);
                                 if (fromClient.equals("1")) {
                                     outToClient.writeBytes(sqlHandler.getPaymentByTenantId(person.getApartmentNumber(), person.getBuildingNumber()) + "\n");
+                                    outToClient.writeBytes("Sum of Payments to Apartment Number: " + person.getApartmentNumber() + "\n");
+                                    break;
                                 } else if (fromClient.startsWith("0")) {
                                     outToClient.writeBytes(changePassword(clientArr, fromClient, details, person) + "\n");
-                                }
+                                    isLoggedIn[0] = false;
+                                    isLoggedIn[1] = false;
+                                    break;
+                                } else
+                                    break;
                             } else if (person instanceof Committee) {
-                                // outToClient.writeBytes("Welcome "+person.getFirstName() +Server.SPACIALLINEBREAK);
-                                outToClient.writeBytes("Please enter 1 in order to get payment history By Apartment Number " + Server.SPACIALLINEBREAK);
-                                outToClient.writeBytes("Please enter 2 in order to get all payment for your building" + Server.SPACIALLINEBREAK);
-                                outToClient.writeBytes("Please enter 3 in order to insert Payment by Apartment Number " + Server.SPACIALLINEBREAK);
-                                outToClient.writeBytes("Please enter 4 in order to get all payment for your building summarised by month" + Server.SPACIALLINEBREAK);
-                                outToClient.writeBytes("Or \"Logout\" for exit\n");
+
                                 fromClient = inFromClient.readLine();
                                 details = stringToHashMap(fromClient.split(" "), details);
                                 switch (details.get("choice")) {
                                     case "0":
                                         outToClient.writeBytes(changePassword(clientArr, fromClient, details, person) + "\n");
+                                        isLoggedIn[0] = false;
+                                        isLoggedIn[1] = false;
+                                        break;
                                     case "1":
                                         result = sqlHandler.getPaymentByTenantId(details.get("ApartmentNumber"), person.getBuildingNumber());
 
@@ -146,23 +142,24 @@ public class socketHandler extends Thread {
                                         break;
                                     case "2":
                                         outToClient.writeBytes(sqlHandler.getAllPaymentsByBuilding(person.getBuildingNumber()) + "\n");
-                                        outToClient.writeBytes("all payment for your building: " +person.getBuildingNumber()+ "\n");
+                                        outToClient.writeBytes("all payment for your building: " + person.getBuildingNumber() + "\n");
 
                                         break;
                                     case "3":
                                         int r = sqlHandler.setPaymentByTenantId(details.get("ApartmentNumber"), Double.parseDouble(details.get("paymentSum")),
-                                                details.get("paymentDate"),person.getBuildingNumber());
-                                        if(r>0)
-                                            outToClient.writeBytes("The listing was successful "+"\n");
+                                                details.get("paymentDate"), person.getBuildingNumber());
+                                        if (r > 0)
+                                            outToClient.writeBytes("The listing was successful " + "\n");
                                         else
-
-                                            outToClient.writeBytes("Apartment number not found!"+"\n");
-
+                                            outToClient.writeBytes("Apartment number not found!" + "\n");
                                         break;
                                     case "4":
 
                                         outToClient.writeBytes(sqlHandler.getSumPaymentsByBuilding(person.getBuildingNumber()) + "\n");
-                                        outToClient.writeBytes("sum of payments for your building: "+person.getBuildingNumber() +"\n");
+                                        outToClient.writeBytes("sum of payments for your building: " + person.getBuildingNumber() + "\n");
+                                        break;
+                                    case "99":
+                                        outToClient.writeBytes("back\n");
                                         break;
                                 }
                             }
@@ -187,7 +184,7 @@ public class socketHandler extends Thread {
             clientArr = fromClient.split(" ");
             details = stringToHashMap(clientArr, details);
             sqlHandler.ChangePassword(person.getUserName(), details.get("oldPassword"), details.get("newPassword"));
-            return "Password was changed successfully";
+            return "Password was changed successfully, Please login again";
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return e.getMessage();
@@ -200,5 +197,17 @@ public class socketHandler extends Thread {
         synchronized (Server.waitObject) {
             Server.connected--;
         }
+    }
+
+    //---------------------------------------------------- Function  --------------------------------------------------------------//
+    private HashMap<String, String> stringToHashMap(String[] arr, HashMap<String, String> details) {
+        for (String s : arr) {
+            String key, value;
+            String[] f = s.split(":");
+            key = f[0];
+            value = f[1];
+            details.put(key, value);
+        }
+        return details;
     }
 }

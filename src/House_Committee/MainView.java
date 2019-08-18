@@ -4,6 +4,8 @@ import House_Committee.Client.TableDemo;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -13,8 +15,8 @@ public class MainView extends JFrame {
 
     private ArrayList<String> columns = new ArrayList<>();
     private ArrayList<ArrayList<Object>> dataRows = new ArrayList<>();
-
-
+    private JPanel panelFenetre;
+    private static Object lock = new Object();
     private String table;
 
     public void StringToObject() {
@@ -34,11 +36,11 @@ public class MainView extends JFrame {
         }
     }
 
-    public MainView(String Table,String message) {
+    public MainView(String Table, String message) throws InterruptedException {
         table = Table;
         StringToObject();
 
-        JPanel panelFenetre = new JPanel(new GridBagLayout());
+        panelFenetre = new JPanel(new GridBagLayout());
         add(panelFenetre);
 
 
@@ -47,6 +49,36 @@ public class MainView extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         setTitle(message);
+        panelFenetre.setBackground(Color.white);
+        setSize(500,500);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        Thread t = new Thread() {
+            public void run() {
+                synchronized(lock) {
+                    while (isVisible())
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                }
+            }
+        };
+        t.start();
+
+        addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent arg0) {
+                synchronized (lock) {
+                    setVisible(false);
+                    lock.notify();
+                }
+            }
+
+        });
+        t.join();
+
     }
 
     private JTable getTable1() {
@@ -70,4 +102,5 @@ public class MainView extends JFrame {
 
         return gbcTable1;
     }
+
 }
