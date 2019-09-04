@@ -2,11 +2,38 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="919fb752-2fad-4e6a-ad51-355ff6b86be9" name="Default Changelist" comment="remove unnecessary functions">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/House_Committee/House_Committee/Client/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/House_Committee/House_Committee/Client/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/House_Committee/House_Committee/Server/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/House_Committee/House_Committee/Server/Server.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/House_Committee/House_Committee/~$hit.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/.idea/libraries/mysql_connector_java_8_0_16.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/ClassDiagram.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/House-Committee.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/House_Committee.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/db/DbDiagram.mwb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/db/DbDiagram.mwb.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/db/DbDiagram2.mwb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/db/db.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/db/paymentTable.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/db/query.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/db/table_creation.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/mysql-connector-java-8.0.16.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/House_Committee/~$hit.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/META-INF/tirgul1.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/house_committee_gui/.idea/house_committee_gui.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/house_committee_gui/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/house_committee_gui/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/tirgul1/house_committee_gui/.idea/workspace.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/House_Committee/Client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/House_Committee/Client/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/House_Committee/Server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/House_Committee/Server/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/House_Committee/Server/socketHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/House_Committee/Server/socketHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/House_Committee/db/sqlHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/House_Committee/db/sqlHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/House_Committee/users/UserManager.java" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,8 +49,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/House_Committee/Client/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="22" column="40" lean-forward="true" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
+            <state relative-caret-position="255">
+              <caret line="30" column="52" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -46,8 +73,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/House_Committee/Server/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="23" column="27" lean-forward="true" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
+            <state relative-caret-position="221">
+              <caret line="16" column="24" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -86,7 +113,7 @@
     </replaceStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/House_Committee" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -97,14 +124,14 @@
         <option value="$PROJECT_DIR$/src/House_Committee/Client/TableDemo.java" />
         <option value="$PROJECT_DIR$/src/House_Committee/Server/socketHandler.java" />
         <option value="$PROJECT_DIR$/src/House_Committee/MainView.java" />
-        <option value="$PROJECT_DIR$/src/House_Committee/Client/Client.java" />
         <option value="$PROJECT_DIR$/src/House_Committee/Server/Server.java" />
+        <option value="$PROJECT_DIR$/src/House_Committee/Client/Client.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-10" />
-    <option name="y" value="-1090" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-27" />
+    <option name="y" value="-25" />
     <option name="width" value="1940" />
     <option name="height" value="1100" />
   </component>
@@ -116,35 +143,34 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="java" type="b2602c69:ProjectViewProjectNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="House-Committee" type="b2602c69:ProjectViewProjectNode" />
+              <item name="House-Committee" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="java" type="b2602c69:ProjectViewProjectNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="House-Committee" type="b2602c69:ProjectViewProjectNode" />
+              <item name="House-Committee" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="java" type="b2602c69:ProjectViewProjectNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="House-Committee" type="b2602c69:ProjectViewProjectNode" />
+              <item name="House-Committee" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="House_Committee" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="java" type="b2602c69:ProjectViewProjectNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="House-Committee" type="b2602c69:ProjectViewProjectNode" />
+              <item name="House-Committee" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="House_Committee" type="462c0819:PsiDirectoryNode" />
               <item name="Client" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="java" type="b2602c69:ProjectViewProjectNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="House-Committee" type="b2602c69:ProjectViewProjectNode" />
+              <item name="House-Committee" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="House_Committee" type="462c0819:PsiDirectoryNode" />
               <item name="Server" type="462c0819:PsiDirectoryNode" />
@@ -153,6 +179,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -363,19 +390,18 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-1087" width="1550" height="878" extended-state="6" />
-    <editor active="true" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
       <window_info id="Image Layers" order="0" />
       <window_info id="Designer" order="1" />
       <window_info id="UI Designer" order="2" />
       <window_info id="Capture Tool" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="5" visible="true" weight="0.15838926" />
+      <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.1624161" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Version Control" order="0" weight="0.3286119" />
       <window_info anchor="bottom" id="Terminal" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" weight="0.3297587" />
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" weight="0.32841823" />
       <window_info anchor="bottom" id="Run" order="5" weight="0.3150134" />
@@ -428,6 +454,9 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/src/House_Committee" />
+    </ignored-roots>
     <MESSAGE value="add Array List in order to stoe Payments" />
     <MESSAGE value="initial commit" />
     <MESSAGE value="auto push" />
@@ -598,6 +627,16 @@
     <entry file="file://$PROJECT_DIR$/src/house_committee_gui/.idea/misc.xml" />
     <entry file="file://$PROJECT_DIR$/src/house_committee_gui/.idea/modules.xml" />
     <entry file="file://$PROJECT_DIR$/src/house_committee_gui/.idea/workspace.xml" />
+    <entry file="file://$PROJECT_DIR$/src/House_Committee/Client/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="30" column="52" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/House_Committee/MainView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
@@ -610,18 +649,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/House_Committee/Server/Server.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="23" column="27" lean-forward="true" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/House_Committee/Client/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
-          <caret line="22" column="40" lean-forward="true" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
+          <caret line="16" column="24" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

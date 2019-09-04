@@ -28,7 +28,7 @@ public class Client {
 
     public static void main(String argv[]) throws Exception {
 
-        clientSocket = new Socket("localhost", 12000); // server ip and port
+        clientSocket = new Socket("localhost", 13000); // server ip and port
 
         // pipe for send data to the server
         outToServer = new DataOutputStream(clientSocket.getOutputStream());
